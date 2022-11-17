@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  roles:
+    - role: geerlingguy.java
+
+  tasks:
+    - name: "Include ansible_role_elasticsearch_cluster"
+      include_role:
+        name: ansible_role_elasticsearch_cluster
