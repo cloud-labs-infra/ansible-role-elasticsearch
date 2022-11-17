@@ -2,7 +2,7 @@
 dependencies: []
 
 galaxy_info:
-  role_name: elasticsearch_cluster
+  role_name: ansible_role_elasticsearch_cluster
   author: capitanflint129
   description: Ansible role for deploying elasticsearch cluster
   company: Cloud Labs Shared Infrastructure
