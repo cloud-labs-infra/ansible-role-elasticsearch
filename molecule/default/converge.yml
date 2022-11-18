@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  roles:
+    - role: geerlingguy.java
+  tasks:
+    - name: "Include cloud_labs.elasticsearch_cluster"
+      include_role:
+        name: "cloud_labs.elasticsearch_cluster"
+      vars:
+        es_version: 7.17.7
+
