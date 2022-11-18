@@ -1,0 +1,27 @@
+---
+
+galaxy_info:
+  role_name: elasticsearch_cluster
+  description: Ansible role for deploying Elasticsearch 7+ cluster
+  company: Cloud Labs Shared
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.5.0
+  platforms:
+  - name: EL
+    versions:
+    - 7
+    - 8
+  - name: Debian
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
+  - galaxy_tags:
+    - elastic
+    - elasticsearch
+    - elk
+    - logging
+    - monitoring
+
+dependencies: []
