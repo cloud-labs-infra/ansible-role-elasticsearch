@@ -19,6 +19,6 @@
         password: test_password
         status_code: 200
         return_content: yes
-      register: one_node_basic_auth_test
+      register: result
       failed_when:
-        - "'superuser' not in one_node_basic_auth_test.content"
+        - "'superuser' not in result.json.elastic.roles"
