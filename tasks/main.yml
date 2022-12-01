@@ -21,8 +21,9 @@
   tags:
     - always
 
-- name: include elasticsearch.yml
-  include: elasticsearch.yml
+- name: Install Elasticsearch
+  include: elasticsearch-Debian.yml
+  when: ansible_os_family == 'Debian'
   tags:
     - install
 
