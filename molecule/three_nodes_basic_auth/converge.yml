@@ -1,0 +1,81 @@
+---
+- name: Converge
+  hosts: elasticsearch_master
+  become: true
+  roles:
+    - role: geerlingguy.java
+  tasks:
+    - name: "Include cloud_labs.elasticsearch_cluster"
+      include_role:
+        name: "cloud_labs.elasticsearch_cluster"
+      vars:
+        es_version: 7.17.7
+        es_api_basic_auth_username: elastic
+        es_api_basic_auth_password: test_password
+        es_heap_size: "1g"
+        es_config:
+          cluster.name: "test-cluster"
+          cluster.initial_master_nodes:
+            - elasticsearch_master
+          discovery.seed_hosts:
+            - 172.18.0.3
+            - 172.18.0.4
+          http.host: 0.0.0.0
+          http.port: 9200
+          node.data: false
+          node.master: true
+          transport.host: 0.0.0.0
+          transport.port: 9300
+          bootstrap.memory_lock: false
+
+- name: Converge node 1
+  hosts: elasticsearch_node_1
+  become: true
+  roles:
+    - role: geerlingguy.java
+  tasks:
+    - name: "Include cloud_labs.elasticsearch_cluster"
+      include_role:
+        name: "cloud_labs.elasticsearch_cluster"
+      vars:
+        es_version: 7.17.7
+        es_config:
+          cluster.name: "test-cluster"
+          cluster.initial_master_nodes:
+            - elasticsearch_master
+          discovery.seed_hosts:
+            - 172.18.0.2
+            - 172.18.0.4
+          http.host: 0.0.0.0
+          http.port: 9200
+          node.data: true
+          node.master: false
+          transport.host: 0.0.0.0
+          transport.port: 9300
+          bootstrap.memory_lock: false
+
+- name: Converge node 2
+  hosts: elasticsearch_node_2
+  become: true
+  roles:
+    - role: geerlingguy.java
+  tasks:
+    - name: "Include cloud_labs.elasticsearch_cluster"
+      include_role:
+        name: "cloud_labs.elasticsearch_cluster"
+      vars:
+        es_version: 7.17.7
+        es_config:
+          cluster.name: "test-cluster"
+          cluster.initial_master_nodes:
+            - elasticsearch_master
+          discovery.seed_hosts:
+            - 172.18.0.2
+            - 172.18.0.3
+          http.host: 0.0.0.0
+          http.port: 9200
+          node.data: true
+          node.master: false
+          transport.host: 0.0.0.0
+          transport.port: 9300
+          bootstrap.memory_lock: false
