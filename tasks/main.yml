@@ -25,12 +25,6 @@
   include: snapshot-release.yml
   when: es_use_snapshot_release
 
-- name: include java.yml
-  include: java.yml
-  when: es_java_install
-  tags:
-      - java
-
 - name: include elasticsearch.yml
   include: elasticsearch.yml
   tags:
