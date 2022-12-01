@@ -21,10 +21,6 @@
   tags:
       - always
 
-- name: use snapshot release
-  include: snapshot-release.yml
-  when: es_use_snapshot_release
-
 - name: include elasticsearch.yml
   include: elasticsearch.yml
   tags:
