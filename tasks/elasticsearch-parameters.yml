@@ -1,11 +1,6 @@
 ---
 # Check for mandatory parameters
 
-- name: Warn about deprecated  es_xpack_features variable
-  debug:
-    msg: "WARNING: es_xpack_features variable is now deprecated. All feature are now enabled by default"
-  when: es_xpack_features is defined
-
 # If the user attempts to lock memory they must specify a heap size
 - name: fail when heap size is not specified when using memory lock
   fail: msg="If locking memory with bootstrap.memory_lock a heap size must be specified"
