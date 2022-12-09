@@ -1,13 +1,11 @@
 ---
 es_version: "7.17.0"
 es_package_name: "elasticsearch"
-es_templates_fileglob: ""
 es_repo_base: "https://artifacts.elastic.co"
 es_apt_key: "{{ es_repo_base }}/GPG-KEY-elasticsearch"
 es_apt_url: "deb {{ es_repo_base }}/packages/{{ es_repo_name }}/apt stable main"
 es_start_service: true
 es_restart_on_change: true
-es_templates: false
 es_user: elasticsearch
 es_group: elasticsearch
 es_config: {}

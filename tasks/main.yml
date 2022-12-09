@@ -76,11 +76,3 @@
   include: ./xpack/security/elasticsearch-security-native.yml
   when: manage_native_realm | bool
   run_once: True
-
-#Templates done after restart - handled by flushing the handlers. e.g. suppose user removes security on a running node and doesn't specify es_api_basic_auth_username and es_api_basic_auth_password.  The templates will subsequently not be removed if we don't wait for the node to restart.
-#We also do after the native realm to ensure any changes are applied here first and its denf up.
-- name: include elasticsearch-template.yml
-  include: elasticsearch-template.yml
-  when: es_templates | bool
-  tags:
-    - templates
