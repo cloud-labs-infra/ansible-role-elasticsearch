@@ -1,6 +1,5 @@
 ---
 es_version: "7.17.0"
-oss_version: false
 es_package_name: "elasticsearch"
 es_version_lock: false
 es_use_repository: true
