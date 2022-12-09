@@ -12,7 +12,6 @@
     url: '{{ es_apt_key }}'
     id: '{{ es_apt_key_id }}'
     state: present
-  when: es_add_repository and es_apt_key | string
 
 - name: Debian - Add elasticsearch repository
   apt_repository:
