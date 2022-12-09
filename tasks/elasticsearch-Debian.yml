@@ -1,22 +1,13 @@
 ---
 
-- name: set fact force_install to no
-  set_fact: force_install=no
-
-- name: Add required dependencies.
-  apt:
-    name:
-      - apt-transport-https
-      - gnupg2
-    state: present
-
-
 - name: Install Elasticsearch repository
   become: yes
   block:
-  - name: Debian - Install apt-transport-https to support https APT downloads
+  - name: Debian - Install required dependencies
     apt:
-      name: apt-transport-https
+      name:
+        - apt-transport-https
+        - gnupg2
       state: present
 
   - name: Debian - Add Elasticsearch repository key
@@ -51,7 +42,6 @@
   apt:
     name: '{{ es_package_name }}{% if es_version is defined and es_version != "" %}={{ es_version }}{% endif %}'
     state: present
-    force: '{{ force_install }}'
     allow_unauthenticated: "{{ 'no' if es_apt_key else 'yes' }}"
     cache_valid_time: 86400
   register: debian_elasticsearch_install_from_repo
