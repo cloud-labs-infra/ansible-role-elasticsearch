@@ -12,7 +12,6 @@
 
 
 - name: Install Elasticsearch repository
-  when: es_use_repository
   become: yes
   block:
   - name: Debian - Install apt-transport-https to support https APT downloads
@@ -55,23 +54,7 @@
     force: '{{ force_install }}'
     allow_unauthenticated: "{{ 'no' if es_apt_key else 'yes' }}"
     cache_valid_time: 86400
-  when: es_use_repository
   register: debian_elasticsearch_install_from_repo
-  notify: restart elasticsearch
-  environment:
-    ES_PATH_CONF: "{{ es_conf_dir }}"
-
-# workaround due to https://github.com/ansible/ansible/issues/66977
-- set_fact:
-    es_deb_url: "{% if es_version is version('7.0.0', '>=') %}{{ es_package_url }}-{{ es_version }}-amd64.deb{% else %}{{ es_package_url }}-{{ es_version }}.deb{% endif %}"
-
-- name: Debian - Install Elasticsearch from url
-  become: yes
-  apt:
-    deb: "{% if es_custom_package_url is defined %}{{ es_custom_package_url }}{% else %}{{ es_deb_url }}{% endif %}"
-    state: present
-  when: not es_use_repository
-  register: elasticsearch_install_from_package
   notify: restart elasticsearch
   environment:
     ES_PATH_CONF: "{{ es_conf_dir }}"
