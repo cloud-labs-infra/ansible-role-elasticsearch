@@ -19,10 +19,6 @@
     repo: '{{ es_apt_url }}'
     state: 'present'
 
-- name: Include optional user and group creation.
-  when: (es_user_id is defined) and (es_group_id is defined)
-  include: elasticsearch-optional-user.yml
-
 - name: Debian - Get installed elasticsearch version
   command: dpkg-query --showformat='${Version}' --show {{ es_package_name }}
   register: installed_es_version
