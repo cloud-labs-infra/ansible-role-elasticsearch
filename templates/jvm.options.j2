@@ -155,9 +155,3 @@
 10-:-XX:UseAVX=2
 {% endif %}
 {% endif %}
-
-{% if es_jvm_custom_parameters !='' %}
-{% for item in es_jvm_custom_parameters %}
-{{ item }}
-{% endfor %}
-{% endif %}
