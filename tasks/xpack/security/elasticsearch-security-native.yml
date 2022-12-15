@@ -91,7 +91,6 @@
     user: "{{es_api_basic_auth_username}}"
     password: "{{es_api_basic_auth_password}}"
     force_basic_auth: yes
-    validate_certs: "{{ es_validate_certs }}"
   when: native_users[item].password is defined
   no_log: True
   with_items: "{{ users_to_ignore | default([]) }}"
@@ -111,7 +110,6 @@
     user: "{{es_api_basic_auth_username}}"
     password: "{{es_api_basic_auth_password}}"
     force_basic_auth: yes
-    validate_certs: "{{ es_validate_certs }}"
   when: manage_native_users
   no_log: True
   with_items: "{{ users_to_modify | default([]) }}"
@@ -127,7 +125,6 @@
     password: "{{es_api_basic_auth_password}}"
     force_basic_auth: yes
     status_code: 200
-    validate_certs: "{{ es_validate_certs }}"
   register: role_list_response
   when: manage_native_roles
   check_mode: no
@@ -153,19 +150,6 @@
   set_fact: roles_to_remove={{ current_roles | difference ( es_roles.native.keys() | list) }}
   when: manage_native_roles
 
-#Delete all non required roles NOT inc. reserved
-- name: Delete Native Roles
-  uri:
-    url: "{{ es_api_uri }}/{{ es_security_api }}/role/{{ item | urlencode }}"
-    method: DELETE
-    status_code: 200
-    user: "{{es_api_basic_auth_username}}"
-    password: "{{es_api_basic_auth_password}}"
-    force_basic_auth: yes
-    validate_certs: "{{ es_validate_certs }}"
-  when: manage_native_roles  and es_delete_unmanaged_native
-  with_items: "{{roles_to_remove | default([]) }}"
-
 - name: set fact roles_to_modify
   set_fact: roles_to_modify={{ es_roles.native.keys() | list | difference (reserved_roles) }}
   when: manage_native_roles
@@ -181,6 +165,5 @@
     user: "{{es_api_basic_auth_username}}"
     password: "{{es_api_basic_auth_password}}"
     force_basic_auth: yes
-    validate_certs: "{{ es_validate_certs }}"
   when: manage_native_roles
   with_items: "{{ roles_to_modify | default([]) }}"
