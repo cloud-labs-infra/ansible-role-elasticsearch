@@ -59,7 +59,6 @@
     user: "{{es_api_basic_auth_username}}"
     password: "{{es_api_basic_auth_password}}"
     force_basic_auth: yes
-    validate_certs: "{{ es_validate_certs }}"
   when: change_api_password
 
 - name: set fact es_api_basic_auth_password
@@ -71,18 +70,6 @@
   set_fact: users_to_remove={{ current_users | difference ( native_users.keys() | list) }}
   when: manage_native_users
 
-#Delete all non required users NOT inc. reserved
-- name: Delete Native Users
-  uri:
-    url: "{{ es_api_uri }}/{{ es_security_api }}/user/{{item}}"
-    method: DELETE
-    status_code: 200
-    user: "{{es_api_basic_auth_username}}"
-    password: "{{es_api_basic_auth_password}}"
-    force_basic_auth: yes
-    validate_certs: "{{ es_validate_certs }}"
-  when: manage_native_users and es_delete_unmanaged_native
-  with_items: "{{ users_to_remove | default([]) }}"
 
 - name: set fact users_to_ignore
   set_fact: users_to_ignore={{ native_users.keys() | list | intersect (reserved_users) }}
