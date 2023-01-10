@@ -30,8 +30,3 @@ es_api_port: 9200
 es_api_uri: "{{ es_api_scheme }}://{{ es_api_host }}:{{ es_api_port }}"
 es_security_api: "_security"
 es_api_sleep: 15
-
-# JVM custom parameters
-es_java_home: ''
-es_jvm_custom_parameters: ''
-es_heap_dump_path: "/var/lib/elasticsearch"

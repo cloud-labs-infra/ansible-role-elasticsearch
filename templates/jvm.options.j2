@@ -125,10 +125,6 @@
 # heap dumps are created in the working directory of the JVM
 -XX:+HeapDumpOnOutOfMemoryError
 
-# specify an alternative path for heap dumps; ensure the directory exists and
-# has sufficient space
--XX:HeapDumpPath={{ es_heap_dump_path }}
-
 # specify an alternative path for JVM fatal error logs
 -XX:ErrorFile={{ es_log_dir }}/hs_err_pid%p.log
 
