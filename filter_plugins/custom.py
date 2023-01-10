@@ -5,10 +5,6 @@ import os.path
 from six import string_types
 
 
-def array_to_str(values=[], separator=","):
-    return separator.join(values)
-
-
 def extract_role_users(users={}, exclude_users=[]):
     role_users = []
     for user, details in list(users.items()):
