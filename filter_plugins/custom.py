@@ -1,10 +1,5 @@
 __author__ = "dale mcdiarmid"
 
-import re
-import os.path
-from six import string_types
-
-
 def extract_role_users(users={}, exclude_users=[]):
     role_users = []
     for user, details in list(users.items()):
@@ -30,6 +25,5 @@ class FilterModule(object):
     def filters(self):
         return {
             "filter_reserved": filter_reserved,
-            "array_to_str": array_to_str,
             "extract_role_users": extract_role_users,
         }
