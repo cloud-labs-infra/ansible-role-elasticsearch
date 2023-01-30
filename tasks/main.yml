@@ -1,18 +1,19 @@
 ---
 
-- set_fact: "es_major_version={{ es_version.split('.')[0] }}.x"
+- set_fact:
+    es_major_version: "{{ es_version.split('.')[0] }}.x"
   when:
     - es_major_version is undefined
   tags:
     - always
 
-- name: os-specific vars
-  include_vars: "{{ansible_os_family}}.yml"
+- set_fact:
+    es_repo_name: "{{ es_major_version }}"
   tags:
     - always
 
-- name: set compatibility variables
-  include: compatibility-variables.yml
+- name: os-specific vars
+  include_vars: "{{ansible_os_family}}.yml"
   tags:
     - always
 
