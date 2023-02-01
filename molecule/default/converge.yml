@@ -10,5 +10,4 @@
     - role: geerlingguy.java
     - role: cloud_labs.elasticsearch_cluster
       vars:
-        elasticsearch_elastic_password: password1
-        elasticsearch_kibana_system_password: password2
+        elasticsearch_xpack_security_enabled: false
