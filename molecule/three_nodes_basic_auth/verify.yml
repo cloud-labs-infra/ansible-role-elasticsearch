@@ -1,7 +1,6 @@
 ---
 - name: Verify
   hosts: elasticsearch_master
-  become: yes
   gather_facts: no
 
   tasks:
