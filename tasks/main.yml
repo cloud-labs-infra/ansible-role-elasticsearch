@@ -52,7 +52,7 @@
     dest: "{{ item }}"
     owner: root
     group: elasticsearch
-    mode: 0660
+    mode: "660"
   loop:
     - /etc/elasticsearch/elasticsearch.yml
   notify: restart elasticsearch
@@ -66,7 +66,7 @@
     path: "{{ es_conf_dir }}/elasticsearch.keystore"
     owner: root
     group: "{{ es_group }}"
-    mode: "0660"
+    mode: "660"
 
 - name: Force a restart if configuration has changed.
   meta: flush_handlers
