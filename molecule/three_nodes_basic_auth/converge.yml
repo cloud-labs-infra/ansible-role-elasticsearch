@@ -21,11 +21,11 @@
           discovery.seed_hosts:
             - 172.18.0.3
             - 172.18.0.4
-          http.host: "{{ elasticsearch_network_host }}"
+          http.host: "{{ es_network_host }}"
           http.port: 9200
           node.data: false
           node.master: true
-          transport.host: "{{ elasticsearch_network_host }}"
+          transport.host: "{{ es_network_host }}"
           transport.port: 9300
           bootstrap.memory_lock: false
 
@@ -36,19 +36,19 @@
     - role: geerlingguy.java
     - role: cloud_labs.elasticsearch_cluster
       vars:
-        elasticsearch_network_host: 0.0.0.0
-        elasticsearch_config:
+        es_network_host: 0.0.0.0
+        es_config:
           cluster.name: "test-cluster"
           cluster.initial_master_nodes:
             - elasticsearch_master
           discovery.seed_hosts:
             - 172.18.0.2
             - 172.18.0.4
-          http.host: "{{ elasticsearch_network_host }}"
+          http.host: "{{ es_network_host }}"
           http.port: 9200
           node.data: true
           node.master: false
-          transport.host: "{{ elasticsearch_network_host }}"
+          transport.host: "{{ es_network_host }}"
           transport.port: 9300
           bootstrap.memory_lock: false
 
@@ -59,18 +59,18 @@
     - role: geerlingguy.java
     - role: cloud_labs.elasticsearch_cluster
       vars:
-        elasticsearch_network_host: 0.0.0.0
-        elasticsearch_config:
+        es_network_host: 0.0.0.0
+        es_config:
           cluster.name: "test-cluster"
           cluster.initial_master_nodes:
             - elasticsearch_master
           discovery.seed_hosts:
             - 172.18.0.2
             - 172.18.0.3
-          http.host: "{{ elasticsearch_network_host }}"
+          http.host: "{{ es_network_host }}"
           http.port: 9200
           node.data: true
           node.master: false
-          transport.host: "{{ elasticsearch_network_host }}"
+          transport.host: "{{ es_network_host }}"
           transport.port: 9300
           bootstrap.memory_lock: false
