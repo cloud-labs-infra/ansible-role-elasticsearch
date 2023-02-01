@@ -1,0 +1,123 @@
+---
+
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Install Elasticsearch.
+  package:
+    name: "{{ elasticsearch_package }}"
+    state: "{{ elasticsearch_package_state }}"
+
+- name: Create Configuration Directory
+  become: yes
+  file:
+    path: "{{ es_conf_dir }}"
+    state: directory
+    owner: root
+    group: "{{ es_group }}"
+    mode: "2750"
+
+- name: Create PID Directory
+  become: yes
+  file:
+    path: "{{ es_pid_dir }}"
+    state: directory
+    owner: "{{ es_user }}"
+    group: "{{ es_group }}"
+    mode: "755"
+
+- name: Create Others Directories
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ es_user }}"
+    group: "{{ es_group }}"
+    mode: "2750"
+  with_items:
+    - "{{ es_log_dir }}"
+    - "{{ es_data_dirs }}"
+
+- name: Copy Configuration File
+  become: yes
+  template:
+    src: elasticsearch.yml.j2
+    dest: "{{ es_conf_dir }}/elasticsearch.yml"
+    owner: root
+    group: "{{ es_group }}"
+    mode: "660"
+    force: yes
+  register: system_change
+  notify: restart elasticsearch
+
+- name: Configure Elasticsearch 7+.
+  template:
+    src: "{{ item | basename }}.j2"
+    dest: "{{ item }}"
+    owner: root
+    group: elasticsearch
+    mode: 0660
+  with_items:
+    - /etc/elasticsearch/elasticsearch.yml
+  notify: restart elasticsearch
+
+#Security configuration
+- name: include elasticsearch-security.yml
+  include: elasticsearch-security.yml
+
+#Make sure elasticsearch.keystore has correct Permissions
+- name: Set elasticsearch.keystore Permissions
+  become: yes
+  file:
+    state: file
+    path: "{{ es_conf_dir }}/elasticsearch.keystore"
+    owner: root
+    group: "{{ es_group }}"
+    mode: "0660"
+
+- name: Force a restart if configuration has changed.
+  meta: flush_handlers
+
+- name: Start Elasticsearch.
+  service:
+    name: elasticsearch
+    state: "{{ elasticsearch_service_state }}"
+    enabled: "{{ elasticsearch_service_enabled }}"
+
+- name: Make sure Elasticsearch is running before proceeding.
+  wait_for:
+    host: "{{ elasticsearch_network_host }}"
+    port: "{{ elasticsearch_http_port }}"
+    delay: 3
+    timeout: 300
+
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html#set-built-in-user-passwords
+- name: Set passwords for default users
+  # such as: elastic, kibana, kibana_system, logstash_system, beats_system, apm_system, and remote_monitoring_user
+  # You only need to create passwords for the built-in users one time for the entire cluster
+  # It's minimal security configuration
+  uri:
+    # pay attention to correct protocol - http(s)
+    url: "https://{{ elasticsearch_network_host }}:{{ elasticsearch_http_port }}/_security/user/{{ item.name }}/_password"
+    method: POST
+    body_format: json
+    body: '{"password":"{{ item.password }}"}'
+    status_code: 200
+    user: elastic
+    password: "{{ elasticsearch_elastic_password }}"
+    force_basic_auth: yes
+    validate_certs: no
+ # no_log: True
+  run_once: True
+  # this task should be run once for a whole cluster
+  delegate_to: "{{ inventory_hostname }}"
+  with_items:
+    # https://www.elastic.co/guide/en/elasticsearch/reference/7.7/built-in-users.html
+    - { name: elastic,                password: "{{ elasticsearch_elastic_password }}" }
+    - { name: kibana_system,          password: "{{ elasticsearch_kibana_system_password }}" }
+    - { name: logstash_system,        password: "{{ elasticsearch_logstash_system_password }}" }
+#    - { name: beats_system,           password: "{{ elasticsearch_beats_system_password }}" }
+#    - { name: apm_system,             password: "{{ elasticsearch_apm_system_password }}" }
+#    - { name: remote_monitoring_user, password: "{{ elasticsearch_remote_monitoring_user_password }}" }
+  when: item.password is defined
+
