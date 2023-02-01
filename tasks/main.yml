@@ -98,7 +98,7 @@
   # It's minimal security configuration
   uri:
     # pay attention to correct protocol - http(s)
-    url: "https://{{ elasticsearch_network_host }}:{{ elasticsearch_http_port }}/_security/user/{{ item.name }}/_password"
+    url: "http://{{ elasticsearch_network_host }}:{{ elasticsearch_http_port }}/_security/user/{{ item.name }}/_password"
     method: POST
     body_format: json
     body: '{"password":"{{ item.password }}"}'
@@ -111,13 +111,12 @@
   run_once: True
   # this task should be run once for a whole cluster
   delegate_to: "{{ inventory_hostname }}"
-  with_items:
+  loop:
     # https://www.elastic.co/guide/en/elasticsearch/reference/7.7/built-in-users.html
-    - { name: elastic,                password: "{{ elasticsearch_elastic_password }}" }
-    - { name: kibana_system,          password: "{{ elasticsearch_kibana_system_password }}" }
-    - { name: logstash_system,        password: "{{ elasticsearch_logstash_system_password }}" }
-#    - { name: beats_system,           password: "{{ elasticsearch_beats_system_password }}" }
-#    - { name: apm_system,             password: "{{ elasticsearch_apm_system_password }}" }
-#    - { name: remote_monitoring_user, password: "{{ elasticsearch_remote_monitoring_user_password }}" }
-  when: item.password is defined
+    - { name: kibana_system,          password: "{{ elasticsearch_kibana_system_password | default([]) }}" }
+    - { name: logstash_system,        password: "{{ elasticsearch_logstash_system_password | default([]) }}" }
+    - { name: beats_system,           password: "{{ elasticsearch_beats_system_password | default([]) }}" }
+    - { name: apm_system,             password: "{{ elasticsearch_apm_system_password | default([]) }}" }
+    - { name: remote_monitoring_user, password: "{{ elasticsearch_remote_monitoring_user_password | default([]) }}" }
+  when: item.password
 
