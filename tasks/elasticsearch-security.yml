@@ -19,3 +19,11 @@
     when:
       - es_elastic_password is defined and list_keystore is defined and 'bootstrap.password' not in list_keystore.stdout_lines
     no_log: true
+
+- name: Set elasticsearch.keystore Permissions
+  file:
+    state: file
+    path: "{{ es_conf_dir }}/elasticsearch.keystore"
+    owner: root
+    group: "{{ es_group }}"
+    mode: "660"
