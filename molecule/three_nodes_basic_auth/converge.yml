@@ -6,15 +6,15 @@
     - role: geerlingguy.java
     - role: cloud_labs.elasticsearch_cluster
       vars:
-        elasticsearch_elastic_password: elastic_password
-        elasticsearch_kibana_system_password: kibana_system_password
-        elasticsearch_logstash_system_password: logstash_system_password
-        elasticsearch_beats_system_password: beats_system_password
-        elasticsearch_apm_system_password: apm_system_password
-        elasticsearch_remote_monitoring_user_password: remote_monitoring_user_password
-        elasticsearch_heap_size_max: "1g"
-        elasticsearch_network_host: 0.0.0.0
-        elasticsearch_config:
+        es_elastic_password: elastic_password
+        es_kibana_system_password: kibana_system_password
+        es_logstash_system_password: logstash_system_password
+        es_beats_system_password: beats_system_password
+        es_apm_system_password: apm_system_password
+        es_remote_monitoring_user_password: remote_monitoring_user_password
+        es_heap_size_max: "1g"
+        es_network_host: 0.0.0.0
+        es_config:
           cluster.name: "test-cluster"
           cluster.initial_master_nodes:
             - elasticsearch_master

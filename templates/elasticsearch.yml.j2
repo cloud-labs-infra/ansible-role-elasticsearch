@@ -13,19 +13,19 @@
 #
 
 
-{% if elasticsearch_config %}
-{{ elasticsearch_config | to_nice_yaml(indent=2)  }}
+{% if es_config %}
+{{ es_config | to_nice_yaml(indent=2)  }}
 {% endif %}
 
 # ---------------------------------- Cluster -----------------------------------
 
-{% if elasticsearch_config['cluster.name'] is not defined %}
+{% if es_config['cluster.name'] is not defined %}
 cluster.name: elasticsearch
 {% endif %}
 
 # ------------------------------------ Node ------------------------------------
 
-{% if elasticsearch_config['node.name'] is not defined %}
+{% if es_config['node.name'] is not defined %}
 node.name: {{inventory_hostname}}
 {% endif %}
 
@@ -43,7 +43,7 @@ path.data: /var/lib/elasticsearch
 path.logs: /var/log/elasticsearch
 #
 
-xpack.security.enabled: {{ elasticsearch_xpack_security_enabled }}
+xpack.security.enabled: {{ es_xpack_security_enabled }}
 
 # ----------------------------------- Memory -----------------------------------
 #
@@ -61,12 +61,12 @@ xpack.security.enabled: {{ elasticsearch_xpack_security_enabled }}
 #
 # Set the bind address to a specific IP (IPv4 or IPv6):
 #
-network.host: {{ elasticsearch_network_host }}
+network.host: {{ es_network_host }}
 #
 # Set a custom port for HTTP:
 #
-{% if elasticsearch_config['http.port'] is not defined %}
-http.port: {{ elasticsearch_http_port }}
+{% if es_config['http.port'] is not defined %}
+http.port: {{ es_http_port }}
 {% endif %}
 #
 # For more information, consult the network module documentation.

@@ -1,17 +1,17 @@
 ---
-elasticsearch_version: '7.x'
-elasticsearch_package: elasticsearch
-elasticsearch_package_state: present
+es_version: '7.x'
+es_package: elasticsearch
+es_package_state: present
 
 es_user: elasticsearch
 es_group: elasticsearch
 
-elasticsearch_service_state: started
-elasticsearch_service_enabled: true
+es_service_state: started
+es_service_enabled: true
 
-elasticsearch_network_host: localhost
-elasticsearch_http_port: 9200
-elasticsearch_transport_port: 9300
+es_network_host: localhost
+es_http_port: 9200
+es_transport_port: 9300
 
 es_home: "/usr/share/elasticsearch"
 es_conf_dir: "/etc/elasticsearch"
@@ -21,13 +21,6 @@ es_data_dirs:
   - "/var/lib/elasticsearch"
 es_log_dir: "/var/log/elasticsearch"
 
-#elasticsearch_elastic_password
-#elasticsearch_kibana_system_password
-#elasticsearch_logstash_system_password
-#elasticsearch_beats_system_password
-#elasticsearch_apm_system_password
-#elasticsearch_remote_monitoring_user_password
+es_xpack_security_enabled: true
 
-elasticsearch_xpack_security_enabled: true
-
-elasticsearch_extra_options: ''
+es_config: {}
