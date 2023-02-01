@@ -1,4 +1,3 @@
-
 ---
 - name: Create the elasticsearch keystore
   block:
@@ -7,22 +6,16 @@
      {{es_home}}/bin/elasticsearch-keystore create
     args:
       creates: "{{ es_conf_dir }}/elasticsearch.keystore"
-    environment:
-      ES_PATH_CONF: "{{ es_conf_dir }}"
 
   - name: Check if bootstrap password is set
     command: >
      {{es_home}}/bin/elasticsearch-keystore list
     register: list_keystore
     changed_when: False
-    environment:
-      ES_PATH_CONF: "{{ es_conf_dir }}"
     check_mode: no
 
   - name: Create Bootstrap password for elastic user
     shell: echo {{ es_elastic_password | quote }} | {{ es_home }}/bin/elasticsearch-keystore add -x 'bootstrap.password'
     when:
       - es_elastic_password is defined and list_keystore is defined and 'bootstrap.password' not in list_keystore.stdout_lines
-    environment:
-      ES_PATH_CONF: "{{ es_conf_dir }}"
     no_log: true
