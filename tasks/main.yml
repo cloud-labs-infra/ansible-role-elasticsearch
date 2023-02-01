@@ -34,7 +34,7 @@
     owner: "{{ es_user }}"
     group: "{{ es_group }}"
     mode: "2750"
-  with_items:
+  loop:
     - "{{ es_log_dir }}"
     - "{{ es_data_dirs }}"
 
@@ -57,7 +57,7 @@
     owner: root
     group: elasticsearch
     mode: 0660
-  with_items:
+  loop:
     - /etc/elasticsearch/elasticsearch.yml
   notify: restart elasticsearch
 
