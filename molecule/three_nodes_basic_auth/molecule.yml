@@ -1,0 +1,41 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - &default_platform
+    name: elasticsearch_master
+    hostname: ubuntu
+    image: my_molecule_instance
+    cgroupns_mode: host
+    privileged: True
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - /var/lib/containerd
+    command: ""
+    pre_build_image: True
+    docker_networks:
+      - name: elasticsearch_cluster_molecule_network
+        ipam_config:
+          - subnet: '172.18.0.0/16'
+    networks:
+      - name: elasticsearch_cluster_molecule_network
+        ipv4_address: '172.18.0.2'
+  - <<: *default_platform
+    name: elasticsearch_node_1
+    networks:
+      - name: elasticsearch_cluster_molecule_network
+        ipv4_address: '172.18.0.3'
+  - <<: *default_platform
+    name: elasticsearch_node_2
+    networks:
+      - name: elasticsearch_cluster_molecule_network
+        ipv4_address: '172.18.0.4'
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      remote_user: ansible
+verifier:
+  name: ansible

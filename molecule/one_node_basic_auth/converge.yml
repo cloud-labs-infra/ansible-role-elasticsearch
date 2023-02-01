@@ -1,0 +1,19 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=true cache_valid_time=600
+      changed_when: false
+  roles:
+    - role: geerlingguy.java
+  tasks:
+    - name: "Include cloud_labs.elasticsearch_cluster"
+      include_role:
+        name: "cloud_labs.elasticsearch_cluster"
+      vars:
+        es_version: 7.17.7
+        es_api_basic_auth_username: elastic
+        es_api_basic_auth_password: test_password
+

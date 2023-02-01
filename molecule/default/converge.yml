@@ -1,0 +1,14 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=true cache_valid_time=600
+      changed_when: false
+  roles:
+    - role: geerlingguy.java
+    - role: cloud_labs.elasticsearch_cluster
+      vars:
+        elasticsearch_elastic_password: password1
+        elasticsearch_kibana_system_password: password2
