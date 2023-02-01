@@ -2,8 +2,7 @@
 ---
 - name: Create the elasticsearch keystore
   block:
-  - name: create the keystore if it doesn't exist yet
-    become: yes
+  - name: Create the keystore if it doesn't exist yet
     command: >
      {{es_home}}/bin/elasticsearch-keystore create
     args:
@@ -12,7 +11,6 @@
       ES_PATH_CONF: "{{ es_conf_dir }}"
 
   - name: Check if bootstrap password is set
-    become: yes
     command: >
      {{es_home}}/bin/elasticsearch-keystore list
     register: list_keystore
@@ -22,10 +20,9 @@
     check_mode: no
 
   - name: Create Bootstrap password for elastic user
-    become: yes
     shell: echo {{ elasticsearch_elastic_password | quote }} | {{ es_home }}/bin/elasticsearch-keystore add -x 'bootstrap.password'
     when:
-      - es_api_basic_auth_password is defined and list_keystore is defined and 'bootstrap.password' not in list_keystore.stdout_lines
+      - elasticsearch_elastic_password is defined and list_keystore is defined and 'bootstrap.password' not in list_keystore.stdout_lines
     environment:
       ES_PATH_CONF: "{{ es_conf_dir }}"
     no_log: true
