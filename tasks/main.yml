@@ -102,7 +102,7 @@
     body: '{"password":"{{ item.password }}"}'
     status_code: 200
     user: elastic
-    password: "{{ elasticsearch_elastic_password }}"
+    password: "{{ es_elastic_password }}"
     force_basic_auth: yes
     validate_certs: no
  # no_log: True
