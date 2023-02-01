@@ -12,7 +12,6 @@
         es_beats_system_password: beats_system_password
         es_apm_system_password: apm_system_password
         es_remote_monitoring_user_password: remote_monitoring_user_password
-        es_heap_size_max: "1g"
         es_network_host: 0.0.0.0
         es_config:
           cluster.name: "test-cluster"
