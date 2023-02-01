@@ -100,7 +100,7 @@
     password: "{{ es_elastic_password }}"
     force_basic_auth: yes
     validate_certs: no
- # no_log: True
+  no_log: True
   run_once: True
   # this task should be run once for a whole cluster
   delegate_to: "{{ inventory_hostname }}"
