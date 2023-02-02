@@ -21,6 +21,4 @@ es_data_dirs:
   - "/var/lib/elasticsearch"
 es_log_dir: "/var/log/elasticsearch"
 
-es_xpack_security_enabled: true
-
 es_config: {}
