@@ -1,0 +1,17 @@
+---
+- name: Verify
+  hosts: elasticsearch_master
+  gather_facts: no
+
+  tasks:
+    - name: check cluster
+      ansible.builtin.uri:
+        url: "http://localhost:9200/_cluster/health"
+        user: elastic
+        password: test_password
+        status_code: 200
+        return_content: yes
+      register: result
+      failed_when:
+        - result.json.number_of_nodes != 3
+        - result.json.number_of_data_nodes != 2
