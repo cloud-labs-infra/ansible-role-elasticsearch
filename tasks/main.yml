@@ -1,5 +1,4 @@
 ---
-
 - include_tasks: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
@@ -13,6 +12,10 @@
 
 - name: include elasticsearch-security.yml
   include: elasticsearch-security.yml
+
+- name: include elasticsearch-ssl.yml
+  include: elasticsearch-ssl.yml
+  when: es_enable_http_ssl or es_enable_transport_ssl
 
 - name: Force a restart if configuration has changed.
   meta: flush_handlers
@@ -36,8 +39,7 @@
   # You only need to create passwords for the built-in users one time for the entire cluster
   # It's minimal security configuration
   uri:
-    # pay attention to correct protocol - http(s)
-    url: "http://{{ es_network_host }}:{{ es_http_port }}/_security/user/{{ item.name }}/_password"
+    url: "https://{{ es_network_host }}:{{ es_http_port }}/_security/user/{{ item.name }}/_password"
     method: POST
     body_format: json
     body: '{"password":"{{ item.password }}"}'
@@ -45,15 +47,16 @@
     user: elastic
     password: "{{ es_elastic_password }}"
     force_basic_auth: yes
-    validate_certs: no
-  no_log: True
-  run_once: True
+    client_cert: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate | basename }}"
+    client_key: "{{ es_ssl_certificate_path }}/{{ es_ssl_key | basename }}"
+    validate_certs: "{{ es_validate_certs }}"
+    no_log: True
   # this task should be run once for a whole cluster
-  delegate_to: "{{ inventory_hostname }}"
   loop:
     # https://www.elastic.co/guide/en/elasticsearch/reference/7.7/built-in-users.html
-    - { name: kibana_system,          password: "{{ es_kibana_system_password }}" }
-    - { name: logstash_system,        password: "{{ es_logstash_system_password }}" }
-    - { name: beats_system,           password: "{{ es_beats_system_password }}" }
-    - { name: apm_system,             password: "{{ es_apm_system_password }}" }
-    - { name: remote_monitoring_user, password: "{{ es_remote_monitoring_user_password }}" }
+    - { name: kibana_system,          password: "{{ es_kibana_system_password | default([]) }}" }
+    - { name: logstash_system,        password: "{{ es_logstash_system_password | default([]) }}" }
+    - { name: beats_system,           password: "{{ es_beats_system_password | default([]) }}" }
+    - { name: apm_system,             password: "{{ es_apm_system_password | default([]) }}" }
+    - { name: remote_monitoring_user, password: "{{ es_remote_monitoring_user_password | default([]) }}" }
+  when: item.password
