@@ -13,11 +13,15 @@
 
     - name: check api
       ansible.builtin.uri:
-        url: "http://localhost:9200/_security/user/elastic"
-        user: elastic
-        password: elastic_password
+        url: "http://localhost:9200/"
+        user: "{{ item.name }}"
+        password: "{{ item.password }}"
         status_code: 200
         return_content: yes
       register: result
-      failed_when:
-        - "'superuser' not in result.json.elastic.roles"
+      loop:
+        - { name: kibana_system,          password: kibana_system_password }
+        - { name: logstash_system,        password: logstash_system_password }
+        - { name: beats_system,           password: beats_system_password }
+        - { name: apm_system,             password: apm_system_password }
+        - { name: remote_monitoring_user, password: remote_monitoring_user_password }
