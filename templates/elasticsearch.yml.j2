@@ -42,9 +42,6 @@ path.data: /var/lib/elasticsearch
 #
 path.logs: /var/log/elasticsearch
 #
-
-xpack.security.enabled: {{ es_xpack_security_enabled }}
-
 # ----------------------------------- Memory -----------------------------------
 #
 # Lock the memory on startup:
@@ -97,3 +94,25 @@ http.port: {{ es_http_port }}
 # Require explicit names when deleting indices:
 #
 #action.destructive_requires_name: true
+
+xpack.security.enabled: true
+
+{% if es_enable_transport_ssl %}
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: "{{ es_ssl_verification_mode }}"
+xpack.security.transport.ssl.key: "{{ es_ssl_certificate_path }}/{{ es_ssl_key | basename }}"
+xpack.security.transport.ssl.certificate: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate | basename }}"
+{% if es_ssl_certificate_authority %}
+xpack.security.transport.ssl.certificate_authorities: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate_authority | basename }}"
+{% endif %}
+xpack.security.transport.ssl.client_authentication: {{ es_ssl_client_authentication }}
+{% endif %}
+
+{% if es_enable_http_ssl %}
+xpack.security.http.ssl.enabled: true
+xpack.security.http.ssl.key: "{{ es_ssl_certificate_path }}/{{ es_ssl_key | basename }}"
+xpack.security.http.ssl.certificate: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate | basename }}"
+{% if es_ssl_certificate_authority %}
+xpack.security.http.ssl.certificate_authorities: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate_authority | basename }}"
+{% endif %}
+{% endif %}
