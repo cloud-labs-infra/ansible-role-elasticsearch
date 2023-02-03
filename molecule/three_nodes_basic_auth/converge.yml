@@ -12,6 +12,7 @@
         es_ssl_certificate_authority: "molecule/three_nodes_basic_auth/test_certs/ca/ca.crt"
         es_ssl_key: "molecule/three_nodes_basic_auth/test_certs/elasticsearch_node_1/elasticsearch_node_1.key"
         es_ssl_certificate: "molecule/three_nodes_basic_auth/test_certs/elasticsearch_node_1/elasticsearch_node_1.crt"
+        es_validate_certs: false
         es_config:
           cluster.name: "test-cluster"
           discovery.seed_hosts:
@@ -38,6 +39,7 @@
         es_ssl_certificate_authority: "molecule/three_nodes_basic_auth/test_certs/ca/ca.crt"
         es_ssl_key: "molecule/three_nodes_basic_auth/test_certs/elasticsearch_node_2/elasticsearch_node_2.key"
         es_ssl_certificate: "molecule/three_nodes_basic_auth/test_certs/elasticsearch_node_2/elasticsearch_node_2.crt"
+        es_validate_certs: false
         es_config:
           cluster.name: "test-cluster"
           discovery.seed_hosts:
@@ -70,6 +72,7 @@
         es_ssl_certificate_authority: "molecule/three_nodes_basic_auth/test_certs/ca/ca.crt"
         es_ssl_key: "molecule/three_nodes_basic_auth/test_certs/elasticsearch_master/elasticsearch_master.key"
         es_ssl_certificate: "molecule/three_nodes_basic_auth/test_certs/elasticsearch_master/elasticsearch_master.crt"
+        es_validate_certs: false
         es_config:
           cluster.name: "test-cluster"
           cluster.initial_master_nodes:
