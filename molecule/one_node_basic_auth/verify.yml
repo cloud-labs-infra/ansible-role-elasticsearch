@@ -12,7 +12,7 @@
         - 9300
 
     - name: check api
-      ansible.builtin.uri:
+      uri:
         url: "http://localhost:9200/"
         user: "{{ item.name }}"
         password: "{{ item.password }}"
