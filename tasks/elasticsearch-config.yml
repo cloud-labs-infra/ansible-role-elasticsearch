@@ -45,5 +45,4 @@
     mode: "660"
   loop:
     - /etc/elasticsearch/elasticsearch.yml
-    - /etc/elasticsearch/jvm.options.d/heap.options
   notify: restart elasticsearch

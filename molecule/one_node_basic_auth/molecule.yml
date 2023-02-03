@@ -6,7 +6,7 @@ driver:
 platforms:
   - name: elasticsearch_cluster
     hostname: ubuntu
-    image: my_molecule_instance
+    image: mpaivabarbosa/molecule-systemd-ubuntu:20.04
     # These options are necessary for testing on systems with cgroups v2
     # https://www.jeffgeerling.com/blog/2022/docker-and-systemd-getting-rid-dreaded-failed-connect-bus-error
     # https://docs.docker.com/engine/reference/commandline/container_create/#options

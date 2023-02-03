@@ -3,7 +3,7 @@
   hosts: all
   become: true
   pre_tasks:
-    - name: Update apt cache.
+    - name: Update apt cache
       apt:
         update_cache: true
         cache_valid_time: 600
@@ -18,4 +18,3 @@
         es_beats_system_password: beats_system_password
         es_apm_system_password: apm_system_password
         es_remote_monitoring_user_password: remote_monitoring_user_password
-
