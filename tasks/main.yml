@@ -47,8 +47,6 @@
     user: elastic
     password: "{{ es_elastic_password }}"
     force_basic_auth: yes
-    client_cert: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate | basename }}"
-    client_key: "{{ es_ssl_certificate_path }}/{{ es_ssl_key | basename }}"
     validate_certs: "{{ es_validate_certs }}"
     no_log: True
   # this task should be run once for a whole cluster
