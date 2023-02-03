@@ -7,7 +7,7 @@ platforms:
   - &default_platform
     name: elasticsearch_master
     hostname: ubuntu
-    image: my_molecule_instance
+    image: mpaivabarbosa/molecule-systemd-ubuntu:20.04
     cgroupns_mode: host
     privileged: True
     volumes:
