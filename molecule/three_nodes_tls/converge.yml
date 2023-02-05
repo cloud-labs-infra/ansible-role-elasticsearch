@@ -1,6 +1,33 @@
 ---
+
+- name: Prepare tests certificates
+  hosts: localhost
+  tasks:
+    - name: Pull elasticsearch image
+      docker_image:
+        name: "{{ elasticsearch_docker_image }}"
+        source: pull
+    - name: Create certificate directory
+      file:
+        path: "{{ test_certs_local_path }}"
+        state: directory
+    - name: Generate certificates bunch
+      shell: |
+        docker run \
+            --rm \
+            -v {{ playbook_dir }}:{{ elasticsearch_tmp_path }} \
+            {{ elasticsearch_docker_image }} \
+            /bin/bash {{ elasticsearch_tmp_path }}/generate_certs.sh
+    - name: Unarchive certificates
+      unarchive:
+        src: "{{ test_certs_local_path}}/certs.zip"
+        dest: "{{ test_certs_local_path}}"
+        remote_src: yes
+
+
 - name: Converge
   hosts: elasticsearch_master
+  become: yes
   roles:
     - role: geerlingguy.java
     - role: cloud_labs.elasticsearch_cluster
@@ -35,6 +62,7 @@
 
 - name: Converge node 1
   hosts: elasticsearch_node_1
+  become: yes
   roles:
     - role: geerlingguy.java
     - role: cloud_labs.elasticsearch_cluster
@@ -61,6 +89,7 @@
 
 - name: Converge node 2
   hosts: elasticsearch_node_2
+  become: yes
   roles:
     - role: geerlingguy.java
     - role: cloud_labs.elasticsearch_cluster
@@ -84,3 +113,11 @@
           transport.host: "{{ es_network_host }}"
           transport.port: 9300
           bootstrap.memory_lock: false
+
+- name: Remove test certificates
+  hosts: localhost
+  tasks:
+    - name: Remove
+      file:
+        path: "{{ test_certs_local_path }}"
+        state: absent
