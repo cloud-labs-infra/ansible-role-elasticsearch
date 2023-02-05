@@ -2,6 +2,18 @@
 - include_tasks: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
+- name: Set the URL scheme to https if SSL/TLS is enabled
+  set_fact:
+    es_scheme: "https"
+  when: es_enable_http_ssl
+
+- name: Fail when ssl enabled without defining a key and certificate
+  fail: msg="Enabling SSL/TLS (es_enable_http_ssl or es_enable_transport_ssl) requires es_ssl_keystore and es_ssl_truststore or es_ssl_key and es_ssl_certificate to be provided"
+  when:
+    - es_enable_http_ssl or es_enable_transport_ssl
+    - (es_ssl_key == "" or es_ssl_certificate == "")
+    - (es_ssl_keystore == "" or es_ssl_truststore == "")
+
 - name: Install Elasticsearch.
   package:
     name: "{{ es_package }}"
@@ -39,7 +51,7 @@
   # You only need to create passwords for the built-in users one time for the entire cluster
   # It's minimal security configuration
   uri:
-    url: "https://{{ es_network_host }}:{{ es_http_port }}/_security/user/{{ item.name }}/_password"
+    url: "{{ es_uri }}/_security/user/{{ item.name }}/_password"
     method: POST
     body_format: json
     body: '{"password":"{{ item.password }}"}'
@@ -48,7 +60,7 @@
     password: "{{ es_elastic_password }}"
     force_basic_auth: yes
     validate_certs: "{{ es_validate_certs }}"
-    no_log: True
+  no_log: True
   # this task should be run once for a whole cluster
   loop:
     # https://www.elastic.co/guide/en/elasticsearch/reference/7.7/built-in-users.html
