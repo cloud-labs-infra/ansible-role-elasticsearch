@@ -1,7 +1,6 @@
 ---
 - name: Converge
   hosts: elasticsearch_master
-  become: true
   roles:
     - role: geerlingguy.java
     - role: cloud_labs.elasticsearch_cluster
@@ -36,7 +35,6 @@
 
 - name: Converge node 1
   hosts: elasticsearch_node_1
-  become: true
   roles:
     - role: geerlingguy.java
     - role: cloud_labs.elasticsearch_cluster
@@ -63,7 +61,6 @@
 
 - name: Converge node 2
   hosts: elasticsearch_node_2
-  become: true
   roles:
     - role: geerlingguy.java
     - role: cloud_labs.elasticsearch_cluster
