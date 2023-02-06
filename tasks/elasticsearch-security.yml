@@ -12,7 +12,6 @@
      {{es_home}}/bin/elasticsearch-keystore list
     register: list_keystore
     changed_when: False
-    check_mode: no
 
   - name: Create Bootstrap password for elastic user
     shell: echo {{ es_elastic_password | quote }} | {{ es_home }}/bin/elasticsearch-keystore add -x 'bootstrap.password'
