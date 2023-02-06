@@ -2,7 +2,7 @@
 - include_tasks: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
-- name: Install Elasticsearch.
+- name: Install Elasticsearch
   package:
     name: "{{ es_package }}"
     state: "{{ es_package_state }}"
@@ -13,10 +13,10 @@
 - name: include elasticsearch-security.yml
   include: elasticsearch-security.yml
 
-- name: Force a restart if configuration has changed.
+- name: Flush handlers before Elasticsearch starts
   meta: flush_handlers
 
-- name: Start Elasticsearch.
+- name: Start Elasticsearch
   service:
     name: elasticsearch
     state: "{{ es_service_state }}"
