@@ -59,7 +59,7 @@ group_vars/all.yml
 ```yaml
 elasticsearch_tmp_path: "/tmp/elasticsearch"
 elasticsearch_docker_image: "elasticsearch:7.17.7"
-test_certs_local_path: "{{ playbook_dir }}/test_certs/"
+certs_local_path: "{{ playbook_dir }}/certs/"
 ```
 
 main.yml
@@ -82,9 +82,9 @@ main.yml
         es_network_host: 0.0.0.0
         es_enable_http_ssl: true
         es_enable_transport_ssl: true
-        es_ssl_certificate_authority: "molecule/three_nodes_tls/test_certs/ca/ca.crt"
-        es_ssl_key: "molecule/three_nodes_tls/test_certs/elasticsearch_master/elasticsearch_master.key"
-        es_ssl_certificate: "molecule/three_nodes_tls/test_certs/elasticsearch_master/elasticsearch_master.crt"
+        es_ssl_certificate_authority: "three_nodes_tls/certs/ca/ca.crt"
+        es_ssl_key: "three_nodes_tls/certs/elasticsearch_master/elasticsearch_master.key"
+        es_ssl_certificate: "three_nodes_tls/certs/elasticsearch_master/elasticsearch_master.crt"
         es_validate_certs: false
         es_config:
           cluster.name: "test-cluster"
@@ -111,9 +111,9 @@ main.yml
         es_network_host: 0.0.0.0
         es_enable_http_ssl: true
         es_enable_transport_ssl: true
-        es_ssl_certificate_authority: "molecule/three_nodes_tls/test_certs/ca/ca.crt"
-        es_ssl_key: "molecule/three_nodes_tls/test_certs/elasticsearch_node_1/elasticsearch_node_1.key"
-        es_ssl_certificate: "molecule/three_nodes_tls/test_certs/elasticsearch_node_1/elasticsearch_node_1.crt"
+        es_ssl_certificate_authority: "three_nodes_tls/certs/ca/ca.crt"
+        es_ssl_key: "three_nodes_tls/certs/elasticsearch_node_1/elasticsearch_node_1.key"
+        es_ssl_certificate: "three_nodes_tls/certs/elasticsearch_node_1/elasticsearch_node_1.crt"
         es_validate_certs: false
         es_config:
           cluster.name: "test-cluster"
@@ -138,9 +138,9 @@ main.yml
         es_network_host: 0.0.0.0
         es_enable_http_ssl: true
         es_enable_transport_ssl: true
-        es_ssl_certificate_authority: "molecule/three_nodes_tls/test_certs/ca/ca.crt"
-        es_ssl_key: "molecule/three_nodes_tls/test_certs/elasticsearch_node_2/elasticsearch_node_2.key"
-        es_ssl_certificate: "molecule/three_nodes_tls/test_certs/elasticsearch_node_2/elasticsearch_node_2.crt"
+        es_ssl_certificate_authority: "three_nodes_tls/certs/ca/ca.crt"
+        es_ssl_key: "three_nodes_tls/certs/elasticsearch_node_2/elasticsearch_node_2.key"
+        es_ssl_certificate: "three_nodes_tls/certs/elasticsearch_node_2/elasticsearch_node_2.crt"
         es_validate_certs: false
         es_config:
           cluster.name: "test-cluster"
