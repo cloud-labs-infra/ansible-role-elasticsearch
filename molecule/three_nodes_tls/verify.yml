@@ -1,6 +1,6 @@
 ---
 - name: Verify
-  hosts: all
+  hosts: elasticsearch_master
   gather_facts: no
 
   tasks:
@@ -11,15 +11,31 @@
         - 9200
         - 9300
 
+    - name: check cluster
+      uri:
+        url: "https://localhost:9200/_cluster/health"
+        user: elastic
+        password: elastic_password
+        status_code: 200
+        return_content: yes
+        validate_certs: false
+      register: result
+      failed_when:
+        - result.json.number_of_nodes != 3
+        - result.json.number_of_data_nodes != 2
+        - result.json.status != "green"
+
     - name: check api
       uri:
-        url: "http://localhost:9200/"
+        url: "https://localhost:9200/"
         user: "{{ item.name }}"
         password: "{{ item.password }}"
         status_code: 200
         return_content: yes
+        validate_certs: false
       register: result
       loop:
+        - { name: elastic,                password: elastic_password }
         - { name: kibana_system,          password: kibana_system_password }
         - { name: logstash_system,        password: logstash_system_password }
         - { name: beats_system,           password: beats_system_password }
