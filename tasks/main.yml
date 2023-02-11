@@ -17,7 +17,7 @@
   meta: flush_handlers
 
 - name: Start Elasticsearch
-  service:
+  systemd:
     name: elasticsearch
     state: "{{ es_service_state }}"
     enabled: "{{ es_service_enabled }}"
