@@ -1,0 +1,58 @@
+---
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Install Elasticsearch
+  package:
+    name: "{{ es_package }}"
+    state: "{{ es_package_state }}"
+
+- name: include elasticsearch-config.yml
+  include: elasticsearch-config.yml
+
+- name: include elasticsearch-security.yml
+  include: elasticsearch-security.yml
+
+- name: Flush handlers before Elasticsearch starts
+  meta: flush_handlers
+
+- name: Start Elasticsearch
+  systemd:
+    name: elasticsearch
+    state: "{{ es_service_state }}"
+    enabled: "{{ es_service_enabled }}"
+
+- name: Make sure Elasticsearch is running before proceeding.
+  wait_for:
+    host: "{{ es_network_host }}"
+    port: "{{ es_http_port }}"
+    delay: 3
+    timeout: 300
+
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html#set-built-in-user-passwords
+- name: Set passwords for default users
+  # such as: elastic, kibana, kibana_system, logstash_system, beats_system, apm_system, and remote_monitoring_user
+  # You only need to create passwords for the built-in users one time for the entire cluster
+  # It's minimal security configuration
+  uri:
+    # pay attention to correct protocol - http(s)
+    url: "http://{{ es_network_host }}:{{ es_http_port }}/_security/user/{{ item.name }}/_password"
+    method: POST
+    body_format: json
+    body: '{"password":"{{ item.password }}"}'
+    status_code: 200
+    user: elastic
+    password: "{{ es_elastic_password }}"
+    force_basic_auth: yes
+    validate_certs: no
+  no_log: True
+  run_once: True
+  # this task should be run once for a whole cluster
+  delegate_to: "{{ inventory_hostname }}"
+  loop:
+    # https://www.elastic.co/guide/en/elasticsearch/reference/7.7/built-in-users.html
+    - { name: kibana_system,          password: "{{ es_kibana_system_password }}" }
+    - { name: logstash_system,        password: "{{ es_logstash_system_password }}" }
+    - { name: beats_system,           password: "{{ es_beats_system_password }}" }
+    - { name: apm_system,             password: "{{ es_apm_system_password }}" }
+    - { name: remote_monitoring_user, password: "{{ es_remote_monitoring_user_password }}" }

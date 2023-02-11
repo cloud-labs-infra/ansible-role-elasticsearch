@@ -1,0 +1,24 @@
+---
+es_version: '7.x'
+es_package: elasticsearch
+es_package_state: present
+
+es_user: elasticsearch
+es_group: elasticsearch
+
+es_service_state: started
+es_service_enabled: true
+
+es_network_host: localhost
+es_http_port: 9200
+es_transport_port: 9300
+
+es_home: "/usr/share/elasticsearch"
+es_conf_dir: "/etc/elasticsearch"
+es_pid_dir: "/var/run/elasticsearch"
+es_tmp_dir: "/tmp/elasticsearch"
+es_data_dirs:
+  - "/var/lib/elasticsearch"
+es_log_dir: "/var/log/elasticsearch"
+
+es_config: {}

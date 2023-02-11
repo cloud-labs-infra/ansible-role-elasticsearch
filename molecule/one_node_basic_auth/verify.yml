@@ -1,0 +1,27 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: check ports
+      ansible.builtin.wait_for:
+        port: "{{ item }}"
+      loop:
+        - 9200
+        - 9300
+
+    - name: check api
+      ansible.builtin.uri:
+        url: "http://localhost:9200/"
+        user: "{{ item.name }}"
+        password: "{{ item.password }}"
+        status_code: 200
+        return_content: yes
+      register: result
+      loop:
+        - { name: kibana_system,          password: kibana_system_password }
+        - { name: logstash_system,        password: logstash_system_password }
+        - { name: beats_system,           password: beats_system_password }
+        - { name: apm_system,             password: apm_system_password }
+        - { name: remote_monitoring_user, password: remote_monitoring_user_password }
