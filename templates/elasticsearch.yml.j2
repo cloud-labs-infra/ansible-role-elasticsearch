@@ -96,3 +96,27 @@ http.port: {{ es_http_port }}
 #action.destructive_requires_name: true
 
 xpack.security.enabled: true
+
+{% if es_enable_transport_ssl %}
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: "{{ es_ssl_verification_mode }}"
+{% if es_ssl_key and  es_ssl_certificate %}
+xpack.security.transport.ssl.key: "{{ es_ssl_certificate_path }}/{{ es_ssl_key | basename }}"
+xpack.security.transport.ssl.certificate: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate | basename }}"
+{% if es_ssl_certificate_authority %}
+xpack.security.transport.ssl.certificate_authorities: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate_authority | basename }}"
+{% endif %}
+{% endif %}
+xpack.security.transport.ssl.client_authentication: {{ es_ssl_client_authentication }}
+{% endif %}
+
+{% if es_enable_http_ssl %}
+xpack.security.http.ssl.enabled: true
+{% if es_ssl_key and  es_ssl_certificate %}
+xpack.security.http.ssl.key: "{{ es_ssl_certificate_path }}/{{ es_ssl_key | basename }}"
+xpack.security.http.ssl.certificate: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate | basename }}"
+{% if es_ssl_certificate_authority %}
+xpack.security.http.ssl.certificate_authorities: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate_authority | basename }}"
+{% endif %}
+{% endif %}
+{% endif %}

@@ -1,0 +1,7 @@
+instances:
+  - name: 'elasticsearch_master'
+    ip: [ '172.18.0.2' ]
+  - name: "elasticsearch_node_1"
+    ip: [ '172.18.0.3' ]
+  - name: 'elasticsearch_node_2'
+    ip: [ '172.18.0.4' ]
