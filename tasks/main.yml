@@ -29,11 +29,11 @@
   include: elasticsearch-ssl.yml
   when: es_enable_http_ssl or es_enable_transport_ssl
 
-- name: Force a restart if configuration has changed.
+- name: Flush handlers before Elasticsearch starts
   meta: flush_handlers
 
-- name: Start Elasticsearch.
-  service:
+- name: Start Elasticsearch
+  systemd:
     name: elasticsearch
     state: "{{ es_service_state }}"
     enabled: "{{ es_service_enabled }}"
