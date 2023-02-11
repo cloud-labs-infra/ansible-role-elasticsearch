@@ -30,7 +30,7 @@
   become: yes
   roles:
     - role: geerlingguy.java
-    - role: cloud_labs.elasticsearch_cluster
+    - role: cloud_labs.elasticsearch
       vars:
         es_elastic_password: elastic_password
         es_kibana_system_password: kibana_system_password
@@ -65,7 +65,7 @@
   become: yes
   roles:
     - role: geerlingguy.java
-    - role: cloud_labs.elasticsearch_cluster
+    - role: cloud_labs.elasticsearch
       vars:
         es_network_host: 0.0.0.0
         es_enable_http_ssl: true
@@ -92,7 +92,7 @@
   become: yes
   roles:
     - role: geerlingguy.java
-    - role: cloud_labs.elasticsearch_cluster
+    - role: cloud_labs.elasticsearch
       vars:
         es_network_host: 0.0.0.0
         es_enable_http_ssl: true

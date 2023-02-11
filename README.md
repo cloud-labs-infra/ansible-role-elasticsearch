@@ -14,7 +14,7 @@ The simplest configuration therefore consists of:
   hosts: localhost
   roles:
     - role: geerlingguy.java
-    - role: cloud_labs.elasticsearch_cluster
+    - role: cloud_labs.elasticsearch
 ```
 
 The above installs Elasticsearch in a single node 'node1' on the hosts 'localhost'.
@@ -33,7 +33,7 @@ The following illustrates applying configuration parameters to an Elasticsearch 
   hosts: localhost
   roles:
     - role: geerlingguy.java
-    - role: elastic.elasticsearch_cluster
+    - role: elastic.elasticsearch
   vars:
     es_data_dirs:
       - "/opt/elasticsearch/data"
@@ -71,7 +71,7 @@ main.yml
   become: yes
   roles:
     - role: geerlingguy.java
-    - role: cloud_labs.elasticsearch_cluster
+    - role: cloud_labs.elasticsearch
       vars:
         es_elastic_password: elastic_password
         es_kibana_system_password: kibana_system_password
@@ -106,7 +106,7 @@ main.yml
   become: yes
   roles:
     - role: geerlingguy.java
-    - role: cloud_labs.elasticsearch_cluster
+    - role: cloud_labs.elasticsearch
       vars:
         es_network_host: 0.0.0.0
         es_enable_http_ssl: true
@@ -133,7 +133,7 @@ main.yml
   become: yes
   roles:
     - role: geerlingguy.java
-    - role: cloud_labs.elasticsearch_cluster
+    - role: cloud_labs.elasticsearch
       vars:
         es_network_host: 0.0.0.0
         es_enable_http_ssl: true

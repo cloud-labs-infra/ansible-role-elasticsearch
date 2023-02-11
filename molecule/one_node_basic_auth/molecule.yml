@@ -4,7 +4,7 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: elasticsearch_cluster
+  - name: elasticsearch_node
     hostname: ubuntu
     image: mpaivabarbosa/molecule-systemd-ubuntu:20.04
     # These options are necessary for testing on systems with cgroups v2

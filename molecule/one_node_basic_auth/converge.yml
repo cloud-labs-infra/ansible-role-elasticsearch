@@ -10,7 +10,7 @@
       changed_when: false
   roles:
     - role: geerlingguy.java
-    - role: cloud_labs.elasticsearch_cluster
+    - role: cloud_labs.elasticsearch
       vars:
         es_elastic_password: elastic_password
         es_kibana_system_password: kibana_system_password

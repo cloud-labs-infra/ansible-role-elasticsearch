@@ -9,4 +9,4 @@
       changed_when: false
   roles:
     - role: geerlingguy.java
-    - role: cloud_labs.elasticsearch_cluster
+    - role: cloud_labs.elasticsearch
