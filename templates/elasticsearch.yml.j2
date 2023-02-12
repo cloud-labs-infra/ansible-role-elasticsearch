@@ -36,11 +36,11 @@ node.name: {{inventory_hostname}}
 #
 # Path to directory where to store the data (separate multiple locations by comma):
 #
-path.data: /var/lib/elasticsearch
+path.data: {{ es_data_dirs | join(',') }}
 #
 # Path to log files:
 #
-path.logs: /var/log/elasticsearch
+path.logs: {{ es_log_dir }}
 #
 # ----------------------------------- Memory -----------------------------------
 #
