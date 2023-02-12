@@ -36,7 +36,7 @@
   register: system_change
   notify: restart elasticsearch
 
-- name: Configure Elasticsearch 7+.
+- name: Configure Elasticsearch 7+
   template:
     src: "{{ item | basename }}.j2"
     dest: "{{ item }}"
